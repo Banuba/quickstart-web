@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Banuba SDK Web AR demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="ui container">
+    <header>
+      <h2>Select an effect:</h2>
+      <button class="ui button" id="reset">Reset</button>
+      <div id="effects"></div>
+    </header>
+
+    <main>
+      <span id="rec" hidden>
+        <i class="circle icon"></i>
+        REC
+      </span>
+      <span id="fps">
+        FRX FPS: <span id="frx"></span>
+        </br>
+        DOM FPS: <span id="dom"></span>
+      </span>
+      <div id="webar"></div>
+      <button class="ui icon button" id="sound">
+        <i class="volume icon"></i>
+      </button>
+    </main>
+
+    <footer>
+      <button class="ui right labeled icon button" id="screenshot">
+        <i class="file image icon"></i>
+        Screenshot
+      </button>
+
+      <div class="ui buttons">
+        <button class="ui right labeled icon button" data-content="Start video recording" id="start">
+          <i class="play icon"></i>
+          Video recording
+        </button>
+        <button class="ui icon button" data-content="Pause video recording" id="pause">
+          <i class="pause icon"></i>
+        </button>
+        <button class="ui icon button" data-content="Resume video recording" id="resume">
+          <i class="step forward icon"></i>
+        </button>
+        <button class="ui icon button" data-content="Stop video recording" id="stop">
+          <i class="stop icon"></i>
+        </button>
+      </div>
+    </footer>
+
+    <script src="BanubaClientToken.js"></script>
+    <script type="module">
+      import { Effect, Webcam, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
+
+      const effects = [
+        "Afro",
+        "PoliceMan",
+        "Glasses",
+        "MonsterFactory",
+        "Spider",
+      ]
+
+      ;(async () => {       
+        const player = await Player.create({
+          clientToken: window.BANUBA_CLIENT_TOKEN,
+          onFPSUpdate: fps => $("#frx").text(Math.floor(fps)),
+        })
+
+        player.use(new Webcam())
+
+        Dom.render(player, "#webar")
+
+        //#region fps
+        let frames = 0;
+        player.addEventListener("framerendered", () => frames++)
+
+        setInterval(() => {
+          $("#dom").text(frames)
+          frames = 0
+        }, 1000)
+        //#endregion
+
+        //#region effects
+        $.each(effects, async (idx, effectName) => {
+          const btn = $(
+            `<button class="ui primary button elastic loading">
+              ${effectName}
+            </button>`
+          )
+          .prependTo("#effects")
+
+          const effect = await Effect.preload(`effects/${effectName}.zip`)
+
+          btn.on("click", () => player.applyEffect(effect))
+          btn.removeClass("loading")
+        })
+        $("#reset").on("click", () => player.clearEffect())
+        //#endregion
+
+        //#region volume
+        let volume = 0 // initial volume state (muted by default)
+
+        $("#sound > i").toggleClass(volume ? "up" : "mute")
+        $("#sound").on("click", () => player.setVolume(volume = +!volume)) // toggle 0 - 1
+          
+        player.addEventListener("volumechange", () => $("#sound > i").toggleClass("up mute"))
+        //#endregion
+
+        //#region image capture
+        const capture = new ImageCapture(player)
+
+        $("#screenshot").on("click", async () => $("body").toast({
+          title: "Screenshot is ready",
+          message: `Check the <a href="${URL.createObjectURL(await capture.takePhoto())}" target="_blank">link</a>`,
+          class: { toast: "ui info message" },
+        }))
+        //#endregion
+
+        //#region video recording
+        let recorder
+
+        // lazy recorder initialization cuz it eats fps :(
+        const getRecorder = () => {
+          if (recorder) return recorder
+          
+          recorder = new VideoRecorder(player)
+
+          recorder.addEventListener("start", () => $("#rec").show())
+          recorder.addEventListener("pause", () => $("#rec").hide())
+          recorder.addEventListener("resume", () => $("#rec").show())
+          recorder.addEventListener("stop", () => $("#rec").hide())
+
+          return recorder
+        }
+
+        $("#start").on("click", () => getRecorder().start())
+        $("#pause").on("click", () => getRecorder().pause())
+        $("#resume").on("click", () => getRecorder().resume())
+        $("#stop").on("click", async () => $("body").toast({
+          title: "Video record is ready",
+          message: `Check the <a href="${URL.createObjectURL(await getRecorder().stop())}" target="_blank">link</a>`,
+          class: { toast: "ui info message" },
+        }))
+
+        //#endregion
+      })()
+    </script>
+</body>
+
+</html>

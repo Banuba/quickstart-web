@@ -1,0 +1,81 @@
+body.ui.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1024px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+h2 { margin-bottom: 0; }
+
+main {
+  overflow: hidden;
+  position: relative;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: auto;
+}
+
+.ui.button { margin: 0.25em; }
+
+#effects {
+  flex-basis: 100%;
+}
+
+#webar {
+  line-height: 0
+}
+
+@keyframes blinker {  
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
+
+#rec {
+  position: absolute;
+  z-index: 1;
+  top: 1.5rem;
+  left: 1rem;
+  color: red;
+  font-weight: bold;
+  font-family: sans-serif;
+  opacity: 0.8;
+}
+
+#rec > i {
+  animation: blinker 1.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+}
+
+#fps {
+  position: absolute;
+  z-index: 1.5;
+  bottom: 1rem;
+  left: 1rem;
+  color: rgba(255,255,255,0.8);
+  font-weight: bold;
+  font-family: sans-serif; 
+}
+
+#sound {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+#screenshot {
+  margin-left: 0;
+}
