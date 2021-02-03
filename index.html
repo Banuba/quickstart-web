@@ -59,7 +59,7 @@
 
     <script src="BanubaClientToken.js"></script>
     <script type="module">
-      import { Effect, Webcam, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
+      import { MediaStream, Effect, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
 
       const effects = [
         "Afro",
@@ -75,7 +75,9 @@
           onFPSUpdate: fps => $("#frx").text(Math.floor(fps)),
         })
 
-        player.use(new Webcam())
+        player.use(new MediaStream(
+          await navigator.mediaDevices.getUserMedia({ video: true })
+        ))
 
         Dom.render(player, "#webar")
 
