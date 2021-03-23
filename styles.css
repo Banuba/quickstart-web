@@ -2,6 +2,7 @@ body.ui.container {
   display: flex;
   flex-direction: column;
   max-width: 1024px;
+  min-width: initial;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -33,7 +34,14 @@ footer {
 .ui.button { margin: 0.25em; }
 
 #effects {
+  display: flex;
+  flex-direction: column;
+  align-content: baseline;
+  flex-wrap: wrap;
   flex-basis: 100%;
+  max-height: 7rem;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 #webar {
