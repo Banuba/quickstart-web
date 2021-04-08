@@ -81,8 +81,30 @@
 
       ;(async () => {
         const wcam = new Webcam()
+
+        // --> check simd file
+        let exists = false
+        const url = window.location.href
+        const splitUrl = url.split('/')
+        splitUrl[splitUrl.length - 1] = "BanubaSDK.simd.wasm"
+        const wasmUrl = splitUrl.join('/');
+
+        fetch(wasmUrl, { method: "head", mode: "no-cors"})
+                .then(function(r) {
+                  if (r.status === 200) {
+                    exists = true;
+                  } else {
+                    console.warn("you forgot to put 'simd' file in project folder!");
+                  }})
+        // <-- end check simd file
+
         const player = await Player.create({
-          clientToken: window.BANUBA_CLIENT_TOKEN
+          clientToken: window.BANUBA_CLIENT_TOKEN,
+          locateFile: {
+            "BanubaSDK.data": "BanubaSDK.data",
+            "BanubaSDK.wasm": "BanubaSDK.wasm",
+            "BanubaSDK.simd.wasm": exists? "BanubaSDK.simd.wasm" : "BanubaSDK.wasm",
+          },
         })
 
         player.use(new Webcam())
