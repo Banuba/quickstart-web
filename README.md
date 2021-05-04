@@ -60,13 +60,13 @@ Zip the effect folder and put it under the `effects/` subfolder
 ```diff
 quickstart-web/
    effects/
-     BackgroundPicture
-     BackgroundBeauty
-     BigPinkGlasses
-     glasses_Banuba
-     Hipster3
+     BackgroundPicture.zip
+     BackgroundBeauty.zip
+     BigPinkGlasses.zip
+     glasses_Banuba.zip
+     Hipster3.zip
 +    NewEffect.zip
-     Hair_recoloring
+     Hair_recoloring.zip
    BanubaClientToken.js
    BanubaSDK.data
    BanubaSDK.js
