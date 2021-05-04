@@ -15,7 +15,10 @@ header {
   margin-bottom: 1rem;
 }
 
-h2 { margin-bottom: 0; }
+h2 {
+  margin-bottom: 0;
+  margin-right: auto;
+}
 
 main {
   overflow: hidden;
@@ -33,12 +36,18 @@ footer {
 
 .ui.button { margin: 0.25em; }
 
+.ui.sub.header {
+  line-height: 1;
+  margin-top: -0.5rem;
+}
+.ui.sub.header > .ui.dropdown.selection { display:block }
+
 #effects {
   display: flex;
+  flex-basis: 100%;
   flex-direction: column;
   align-content: baseline;
   flex-wrap: wrap;
-  flex-basis: 100%;
   max-height: 7rem;
   overflow-x: auto;
   overflow-y: hidden;
@@ -48,7 +57,7 @@ footer {
   line-height: 0
 }
 
-@keyframes blinker {  
+@keyframes blinker {
   from { opacity: 1; }
   to { opacity: 0.3; }
 }
@@ -75,7 +84,7 @@ footer {
   left: 1rem;
   color: rgba(255,255,255,0.8);
   font-weight: bold;
-  font-family: sans-serif; 
+  font-family: sans-serif;
 }
 
 #sound {

@@ -14,6 +14,14 @@
 <body class="ui container">
     <header>
       <h2>Select an effect:</h2>
+      <label class="ui sub header">
+        FPS lock
+        <select class="ui dropdown">
+          <option value="30" selected>30</option>
+          <option value="60">60</option>
+          <option value="-1">🔥 Unlocked 🔥</option>
+        </select>
+      </label>
       <button class="ui button" id="reset">Reset</button>
       <div id="effects"></div>
     </header>
@@ -24,9 +32,11 @@
         REC
       </span>
       <span id="fps">
-        FRX FPS: <span id="frx"></span>
+        Webcam FPS: <span id="cam"></span>
         </br>
-        DOM FPS: <span id="dom"></span>
+        Processing FPS: <span id="processing"></span>
+        </br>
+        Render FPS: <span id="render"></span>
       </span>
       <div id="webar"></div>
       <button class="ui icon button" id="sound">
@@ -69,23 +79,35 @@
         "scene_spider",
       ]
 
-      ;(async () => {       
+      ;(async () => {
+        const wcam = new Webcam()
         const player = await Player.create({
-          clientToken: window.BANUBA_CLIENT_TOKEN,
-          onFPSUpdate: fps => $("#frx").text(Math.floor(fps)),
+          clientToken: window.BANUBA_CLIENT_TOKEN
         })
 
         player.use(new Webcam())
 
+        $('select').dropdown({ onChange: (fps) => player.use(wcam, { fps }) })
+
         Dom.render(player, "#webar")
 
         //#region fps
-        let frames = 0;
-        player.addEventListener("framerendered", () => frames++)
+        const fps = {
+          cam: 0,
+          processing: 0,
+          render: 0,
+        }
+        player.addEventListener("framereceived", () => fps.cam++)
+        player.addEventListener("frameprocessed", ({ detail }) => fps.processing = 1. / detail.averagedDuration)
+        player.addEventListener("framerendered", () => fps.render++)
 
         setInterval(() => {
-          $("#dom").text(frames)
-          frames = 0
+          Object
+                  .entries(fps)
+                  .forEach(([name, value]) => {
+                    fps[name] = 0
+                    $(`#${name}`).text(value.toFixed(1))
+                  })
         }, 1000)
         //#endregion
 
@@ -111,7 +133,7 @@
 
         $("#sound > i").toggleClass(volume ? "up" : "mute")
         $("#sound").on("click", () => player.setVolume(volume = +!volume)) // toggle 0 - 1
-          
+
         player.addEventListener("volumechange", () => $("#sound > i").toggleClass("up mute"))
         //#endregion
 
@@ -131,7 +153,7 @@
         // lazy recorder initialization cuz it eats fps :(
         const getRecorder = () => {
           if (recorder) return recorder
-          
+
           recorder = new VideoRecorder(player)
 
           recorder.addEventListener("start", () => $("#rec").show())
