@@ -60,12 +60,13 @@ Zip the effect folder and put it under the `effects/` subfolder
 ```diff
 quickstart-web/
    effects/
+     BackgroundPicture
+     BackgroundBeauty
+     BigPinkGlasses
      glasses_Banuba
-     GlassMask
      Hipster3
-     scene_bg
 +    NewEffect.zip
-     scene_spider
+     Hair_recoloring
    BanubaClientToken.js
    BanubaSDK.data
    BanubaSDK.js
@@ -83,10 +84,11 @@ Add the effect name into `effects` array at [index.html, line 65](/index.html#L6
 
   const effects = [
 +   "NewEffect",
+    "BackgroundPicture",
+    "BackgroundBeauty",
+    "BigPinkGlasses",
     "glasses_Banuba",
-    "GlassMask",
     "Hipster3",
-    "scene_bg",
-    "scene_spider",
+    "Hair_recoloring"
   ]
 ```
