@@ -36,6 +36,7 @@ quickstart-web/
 +  BanubaSDK.data
 +  BanubaSDK.js
 +  BanubaSDK.wasm
++  BanubaSDK.simd.wasm
    index.html
    README.md
    styles.css
@@ -70,6 +71,7 @@ quickstart-web/
    BanubaSDK.data
    BanubaSDK.js
    BanubaSDK.wasm
+   BanubaSDK.simd.wasm
    index.html
    README.md
    styles.css
