@@ -25,6 +25,17 @@ main {
   position: relative;
 }
 
+output {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: white;
+  font-weight: bold;
+  font-family: sans-serif;
+  filter: drop-shadow(0 1px 1px rgba(169, 169, 169, 0.9));
+}
+
+
 footer {
   display: flex;
   flex-wrap: wrap;
@@ -82,9 +93,10 @@ footer {
   z-index: 1.5;
   bottom: 1rem;
   left: 1rem;
-  color: rgba(255,255,255,0.8);
+  color: white;
   font-weight: bold;
   font-family: sans-serif;
+  filter: drop-shadow(0 1px 1px rgba(169, 169, 169, 0.5));
 }
 
 #sound {

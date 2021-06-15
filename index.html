@@ -42,6 +42,7 @@
       <button class="ui icon button" id="sound">
         <i class="volume icon"></i>
       </button>
+      <output></output>
     </main>
 
     <footer>
@@ -72,6 +73,7 @@
       import { Effect, Webcam, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
 
       const effects = [
+        "Ruler",
         "BackgroundPicture",
         "BackgroundBeauty",
         "BigPinkGlasses",
@@ -128,6 +130,33 @@
         })
         $("#reset").on("click", () => player.clearEffect())
         //#endregion
+
+
+        //#region ruler
+        player.addEventListener("effectactivated", ({ detail: effect }) => {
+          const isRuler = effect.scene().getName() === "ruler"
+
+          player.removeEventListener("framedata", onFrameData)
+          
+          if (isRuler) player.addEventListener("framedata", onFrameData)
+
+          $("output").text("")
+        })
+
+        function onFrameData({ detail: frameData }) {
+          const face = frameData
+            .getFrxRecognitionResult()
+            ?.getFaces()
+            .get(0)
+            .hasFace()
+
+          if (!face) return
+
+          const distance = frameData.getRuler()
+
+          $("output").text(`Distance: ${distance.toFixed(2)}`)
+        }
+        //#endreegion
 
         //#region volume
         let volume = 0 // initial volume state (muted by default)
