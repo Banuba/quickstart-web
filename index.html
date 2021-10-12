@@ -38,7 +38,9 @@
         </br>
         Render FPS: <span id="render"></span>
       </span>
-      <div id="webar"></div>
+      <div id="webar">
+        <canvas id="postprocessed" style="max-width: 100%; object-fit: cover;">
+      </div>
       <button class="ui icon button" id="sound">
         <i class="volume icon"></i>
       </button>
@@ -69,7 +71,7 @@
 
     <script src="BanubaClientToken.js"></script>
     <script type="module">
-      import { Effect, Webcam, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
+      import { Effect, Webcam, Player, VideoRecorder, ImageCapture, MediaStreamCapture, Dom } from "./BanubaSDK.js"
 
       const effects = [
         "Afro",
@@ -86,10 +88,35 @@
         })
 
         player.use(new Webcam())
+        player.play()
 
         $('select').dropdown({ onChange: (fps) => player.use(wcam, { fps }) })
 
-        Dom.render(player, "#webar")
+        // #region postprocessing
+        const capture = document.createElement("video")
+        capture.autoplay = true
+        capture.srcObject = new MediaStreamCapture(player)
+
+        const canvas = document.getElementById("postprocessed")
+        const ctx = canvas.getContext("2d")
+        const fontSize = 48 * window.devicePixelRatio
+
+        function postprocess() {
+          canvas.width = capture.videoWidth
+          canvas.height = capture.videoHeight
+
+          ctx.drawImage(capture, 0, 0)
+
+          ctx.font = `${fontSize}px serif`
+          ctx.fillStyle = 'red'
+          ctx.fillText('A Watermark', 0.5 * fontSize, 1.25 * fontSize)
+        }
+
+        ;(function loop() {
+          postprocess()
+          requestAnimationFrame(loop)
+        })()
+        // #endregion
 
         //#region fps
         const fps = {
