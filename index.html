@@ -95,8 +95,6 @@
 
         const player = await Player.create({ clientToken: window.BANUBA_CLIENT_TOKEN })
 
-        player.use(new Webcam())
-
         //#region fps lock
         $("select").dropdown({
           onChange: (fps) => {
