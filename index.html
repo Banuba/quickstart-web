@@ -39,6 +39,13 @@
         Render FPS: <span id="render"></span>
       </span>
       <div id="webar"></div>
+      <div id="source">
+        <button class="ui button" id="source-webcam">Webcam</button>
+        <span>or</span>
+        <label class="ui button">
+          <input type="file" id="source-image" accept="image/*">Upload a photo</button>
+        </label>
+      </div>
       <button class="ui icon button" id="sound">
         <i class="volume icon"></i>
       </button>
@@ -70,7 +77,7 @@
 
     <script src="BanubaClientToken.js"></script>
     <script type="module">
-      import { Effect, Webcam, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
+      import { Effect, Webcam, Image, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
 
       const effects = [
         "Ruler",
@@ -83,18 +90,36 @@
       ]
 
       ;(async () => {
-        const wcam = new Webcam()
-        const player = await Player.create({
-          clientToken: window.BANUBA_CLIENT_TOKEN
+        let lock = $("select")[0].value
+        let source
+
+        const player = await Player.create({ clientToken: window.BANUBA_CLIENT_TOKEN })
+
+        //#region fps lock
+        $("select").dropdown({
+          onChange: (fps) => {
+            lock = fps
+            if (source) player.use(source, { fps: lock })
+          }
         })
+        //#endregion
+        
+        //#region source
+        $("#source-image").on("change", e => {
+          source?.stop?.()
+          source = new Image(e.target.files[0])
+          player.use(source, { fps: lock })
+          Dom.render(player, "#webar")
+        })
+        $("#source-webcam").on("click", e => {
+          source?.stop?.()
+          source = new Webcam()
+          player.use(source, { fps: lock })
+          Dom.render(player, "#webar")
+        })
+        //#endregion
 
-        player.use(new Webcam())
-
-        $('select').dropdown({ onChange: (fps) => player.use(wcam, { fps }) })
-
-        Dom.render(player, "#webar")
-
-        //#region fps
+        //#region fps count
         const fps = {
           cam: 0,
           processing: 0,
