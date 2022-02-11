@@ -86,14 +86,22 @@
         "BigPinkGlasses",
         "glasses_Banuba",
         "Hipster3",
+        "Rorschach",
         "Hair_recoloring"
       ]
+
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+      /** @see https://docs.banuba.com/face-ar-sdk-v1/web/web_known_issues#effect-animations-are-delayed-on-safari for details */
+      if (isSafari) navigator.serviceWorker.register("./range-requests.sw.js")
 
       ;(async () => {
         let lock = $("select")[0].value
         let source
 
-        const player = await Player.create({ clientToken: window.BANUBA_CLIENT_TOKEN })
+        const player = await Player.create({
+          clientToken: window.BANUBA_CLIENT_TOKEN,
+          proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
+        })
 
         //#region fps lock
         $("select").dropdown({
