@@ -19,8 +19,6 @@ Check out the [Integration tutorials](https://docs.banuba.com/face-ar-sdk-v1/web
 
 Banuba Client token is required to get Banuba SDK Web AR working.
 
-Generally it's delivered with Banuba SDK Web AR archive.
-
 To receive a new **trial** client token please fill in the [form on banuba.com](https://www.banuba.com/face-filters-sdk) website, or contact us via [info@banuba.com](mailto:info@banuba.com).
 
 ## Environment setup and local run
