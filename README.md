@@ -5,14 +5,15 @@ Please use [v0.x](../../tree/v0.x) branch for SDK version 0.x (e.g. v0.38).
     
 ## Requirements
 
-- The [latest](#obtaining-banuba-sdk-web-ar) Banuba SDK Web AR release
 - Banuba [client token](#obtaining-banuba-client-token)
 - [Nodejs](https://nodejs.org/en/) installed
 - Browser with support of [WebGL 2.0](https://caniuse.com/#feat=webgl2)
 
 ### Obtaining Banuba SDK Web AR
 
-To get the latest Banuba SDK Web AR release please fill in the [form on banuba.com](https://www.banuba.com/face-filters-sdk) website, or contact us via [info@banuba.com](mailto:info@banuba.com).
+The example uses CDN version of the [@banuba/webar](https://www.npmjs.com/package/@banuba/webar) npm package for simplicity.
+Please use the npm package mentioned above for real world projects.
+Check out the [Integration tutorials](https://docs.banuba.com/face-ar-sdk-v1/web/web_tutorials_integrations) for more ways of consuming [@banuba/webar](https://www.npmjs.com/package/@banuba/webar) package.
 
 ### Obtaining Banuba Client token
 
@@ -28,21 +29,6 @@ Clone the repository
 
 ```sh
 git clone git@github.com:Banuba/quickstart-web.git
-```
-
-Put Banuba SDK Web AR [files](#obtaining-banuba-sdk-web-ar) into the cloned folder
-
-```diff
-quickstart-web/
-   effects/
-   BanubaClientToken.js
-+  BanubaSDK.data
-+  BanubaSDK.js
-+  BanubaSDK.wasm
-+  BanubaSDK.simd.wasm
-   index.html
-   README.md
-   styles.css
 ```
 
 Insert Banuba [client token](#obtaining-banuba-client-token) into `BanubaClientToken.js`
@@ -72,10 +58,6 @@ quickstart-web/
 +    NewEffect.zip
      Hair_recoloring.zip
    BanubaClientToken.js
-   BanubaSDK.data
-   BanubaSDK.js
-   BanubaSDK.wasm
-   BanubaSDK.simd.wasm
    index.html
    README.md
    styles.css
@@ -97,3 +79,9 @@ Add the effect name into `effects` array at [index.html, line 65](/index.html#L6
     "Hair_recoloring"
   ]
 ```
+
+You can obtain more effects on the [Demo Face Filters](https://docs.banuba.com/face-ar-sdk-v1/overview/demo_face_filters) page.
+
+---
+  
+Learn more about Banuba WebAR SDK on the [Web](https://docs.banuba.com/face-ar-sdk-v1/web/web_overview) section of [docs.banuba.com](https://docs.banuba.com).

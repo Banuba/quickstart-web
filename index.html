@@ -77,7 +77,7 @@
 
     <script src="BanubaClientToken.js"></script>
     <script type="module">
-      import { Effect, Webcam, Image, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
+      import { Effect, Webcam, Image, Player, Module, VideoRecorder, ImageCapture, Dom } from "https://unpkg.com/@banuba/webar@1.5.0-beta.2"
 
       const effects = [
         "Ruler",
@@ -98,10 +98,15 @@
         let lock = $("select")[0].value
         let source
 
-        const player = await Player.create({
-          clientToken: window.BANUBA_CLIENT_TOKEN,
-          proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
-        })
+        const [player, modules] = await Promise.all([
+          Player.create({
+            clientToken: window.BANUBA_CLIENT_TOKEN,
+            proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
+          }),
+          Module.preload(["face_tracker", "background", "hair"].map(m => `https://unpkg.com/@banuba/webar@1.5.0-beta.2/dist/modules/${m}.zip`)),
+        ])
+
+        await player.addModule(...modules)
 
         //#region fps lock
         $("select").dropdown({
