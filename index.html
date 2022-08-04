@@ -77,7 +77,7 @@
 
     <script src="BanubaClientToken.js"></script>
     <script type="module">
-      import { Effect, Webcam, Image, Player, Module, VideoRecorder, ImageCapture, Dom } from "https://unpkg.com/@banuba/webar@1.5.0-beta.2"
+      import { Effect, Webcam, Image, Player, Module, VideoRecorder, ImageCapture, Dom } from "https://cdn.jsdelivr.net/npm/@banuba/webar@1.5.0-beta.12/dist/BanubaSDK.browser.esm.min.js"
 
       const effects = [
         "Ruler",
@@ -103,7 +103,9 @@
             clientToken: window.BANUBA_CLIENT_TOKEN,
             proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
           }),
-          Module.preload(["face_tracker", "background", "hair"].map(m => `https://unpkg.com/@banuba/webar@1.5.0-beta.2/dist/modules/${m}.zip`)),
+          // Find more about available modules:
+          // https://docs.banuba.com/face-ar-sdk-v1/generated/typedoc/classes/Module.html
+          Module.preload(["face_tracker", "background", "hair"].map(m => `https://cdn.jsdelivr.net/npm/@banuba/webar@1.5.0-beta.12/dist/modules/${m}.zip`)),
         ])
 
         await player.addModule(...modules)
