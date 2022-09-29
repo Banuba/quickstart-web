@@ -77,7 +77,7 @@
 
     <script src="BanubaClientToken.js"></script>
     <script type="module">
-      import { Effect, Webcam, Image, Player, Module, VideoRecorder, ImageCapture, Dom } from "https://cdn.jsdelivr.net/npm/@banuba/webar/dist/BanubaSDK.browser.esm.min.js"
+      import { Effect, MediaStream as WebARMediaStream, Image, Player, Module, MediaStreamCapture, ImageCapture, Dom } from "https://cdn.jsdelivr.net/npm/@banuba/webar/dist/BanubaSDK.browser.esm.min.js"
 
       const effects = [
         "Ruler",
@@ -96,6 +96,7 @@
 
       ;(async () => {
         let lock = $("select")[0].value
+        let wcam
         let source
 
         const [player, modules] = await Promise.all([
@@ -126,9 +127,12 @@
           player.use(source, { fps: lock })
           Dom.render(player, "#webar")
         })
-        $("#source-webcam").on("click", e => {
+        $("#source-webcam").on("click", async (e) => {
           source?.stop?.()
-          source = new Webcam()
+          // request video and audio
+          wcam = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          // https://docs.banuba.com/face-ar-sdk-v1/web/web_tutorials_basic#external-mediastream
+          source = new WebARMediaStream(wcam)
           player.use(source, { fps: lock })
           Dom.render(player, "#webar")
         })
@@ -224,7 +228,16 @@
         const getRecorder = () => {
           if (recorder) return recorder
 
-          recorder = new VideoRecorder(player)
+          // https://docs.banuba.com/face-ar-sdk-v1/web/web_tutorials_basic#mediastream
+          const capture = new MediaStreamCapture(player)
+
+          const stream = new MediaStream([
+            wcam && wcam.active && wcam.getAudioTracks()[0], // original Webcam audio
+            capture.getVideoTracks()[0], // processed AR video
+          ].filter(Boolean))
+
+          // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
+          recorder = new MediaRecorder(stream) 
 
           recorder.addEventListener("start", () => $("#rec").show())
           recorder.addEventListener("pause", () => $("#rec").hide())
@@ -237,11 +250,19 @@
         $("#start").on("click", () => getRecorder().start())
         $("#pause").on("click", () => getRecorder().pause())
         $("#resume").on("click", () => getRecorder().resume())
-        $("#stop").on("click", async () => $("body").toast({
-          title: "Video record is ready",
-          message: `Check the <a href="${URL.createObjectURL(await getRecorder().stop())}" target="_blank">link</a>`,
-          class: { toast: "ui info message" },
-        }))
+        $("#stop").on("click", async () => {
+          
+          const video = await new Promise((resolve) => {
+            recorder.addEventListener("dataavailable", (event) => resolve(event.data))
+            recorder.stop()
+          })
+
+          $("body").toast({
+            title: "Video record is ready",
+            message: `Check the <a href="${URL.createObjectURL(video)}" target="_blank">link</a>`,
+            class: { toast: "ui info message" },
+          })
+        })
 
         //#endregion
       })()
