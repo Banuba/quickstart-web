@@ -87,7 +87,8 @@
         "glasses_Banuba",
         "Hipster3",
         "Rorschach",
-        "Hair_recoloring"
+        "Hair_recoloring",
+        "Afro"
       ]
 
       const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
@@ -165,7 +166,22 @@
 
           const effect = await Effect.preload(`effects/${effectName}.zip`)
 
-          btn.on("click", () => player.applyEffect(effect))
+          btn.on("click", async () => {
+            player.applyEffect(effect)
+
+            // Example for Combine VBG with WebAR effect (mask) guide
+            // See https://docs.banuba.com/face-ar-sdk-v1/effect_api/combine_effect_vbg#combine-vbg-with-webar-effect-mask
+            if (effectName === "Afro") {
+              // Load the image file
+              const image = await fetch("./assets/beach.png").then(r => r.arrayBuffer())
+              await effect.writeFile("images/beach.png", image)
+
+              // Connect built-it background module (once per effect)
+              await effect.evalJs("Background = require('bnb_js/background')")
+              // Then, set the background texture
+              await effect.evalJs("Background.texture('images/beach.png')")
+            }
+          })
           btn.removeClass("loading")
         })
         $("#reset").on("click", () => player.clearEffect())
