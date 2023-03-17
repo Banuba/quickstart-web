@@ -129,6 +129,7 @@
         $("#source-webcam").on("click", async (e) => {
           if (source instanceof MediaStream) source.getTracks().forEach(t => t.stop()) 
           source = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+          // https://docs.banuba.com/face-ar-sdk-v1/web/web_tutorials_basic#external-mediastream
           player.use(new WebARMediaStream(source), { horizontalFlip: true, fps: lock })
           Dom.render(player, "#webar")
         })
@@ -224,8 +225,9 @@
         const getRecorder = () => {
           if (recorder) return recorder
           
+          // https://docs.banuba.com/face-ar-sdk-v1/web/web_tutorials_basic#mediastream
           const video = new MediaStreamCapture(player).getVideoTrack()
-          const audio = source instanceof MediaStream ? source.getAudioTracks()[0] : null
+          const audio = source instanceof MediaStream && source.active ? source.getAudioTracks()[0] : null
 
           // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder 
           recorder = new MediaRecorder(new MediaStream([video, audio].filter(Boolean)))
