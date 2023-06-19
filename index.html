@@ -82,12 +82,17 @@
       const effects = [
         "Ruler",
         "BackgroundPicture",
-        "BackgroundBeauty",
-        "BigPinkGlasses",
-        "glasses_Banuba",
-        "Hipster3",
+        "Hipster",
         "Rorschach",
-        "Hair_recoloring"
+        "DebugFRX",
+        "ActionunitsRabbit",
+        "Glasses",
+        "Lips",
+        "MonsterFlowery",
+        "Retrowave",
+        "Ring",
+        "TrollGrandma",
+        "Hair",
       ]
 
       const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
@@ -105,7 +110,7 @@
           }),
           // Find more about available modules:
           // https://docs.banuba.com/face-ar-sdk-v1/generated/typedoc/classes/Module.html
-          Module.preload(["face_tracker", "background", "hair"].map(m => `https://cdn.jsdelivr.net/npm/@banuba/webar/dist/modules/${m}.zip`)),
+          Module.preload(["face_tracker", "background", "hair", "hands", "lips"].map(m => `https://cdn.jsdelivr.net/npm/@banuba/webar/dist/modules/${m}.zip`)),
         ])
 
         await player.addModule(...modules)
@@ -184,15 +189,10 @@
         })
 
         function onFrameData({ detail: frameData }) {
-          const face = frameData
-            .getFrxRecognitionResult()
-            ?.getFaces()
-            .get(0)
-            .hasFace()
+          const hasFace = frameData.get("frxRecognitionResult.faces.0.hasFace")
+          if (!hasFace) return
 
-          if (!face) return
-
-          const distance = frameData.getRuler()
+          const distance = frameData.get("Ruler")
 
           $("output").text(`Distance: ${distance.toFixed(2)}`)
         }
