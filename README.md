@@ -41,38 +41,20 @@ Open [localhost:8080](http://localhost:8080)
 
 ## Adding a new effect
 
-Zip the effect folder and put it under the `effects/` subfolder
-```diff
-quickstart-web/
-   effects/
-     BackgroundPicture.zip
-     BackgroundBeauty.zip
-     BigPinkGlasses.zip
-     glasses_Banuba.zip
-     Hipster3.zip
-+    NewEffect.zip
-     Hair_recoloring.zip
-   BanubaClientToken.js
-   index.html
-   README.md
-   styles.css
-```
+Put effect zip file to `import/` folder and add zip file name to block `import` in `EffectsConfig.js` file.
+Example:
 
-Add the effect name into `effects` array at [index.html, line 65](/index.html#L65)
-
-```diff
-<script type="module">
-  import { Effect, Webcam, Player, VideoRecorder, ImageCapture, Dom } from "./BanubaSDK.js"
-
-  const effects = [
-+   "NewEffect",
-    "BackgroundPicture",
-    "BackgroundBeauty",
-    "BigPinkGlasses",
-    "glasses_Banuba",
-    "Hipster3",
-    "Hair_recoloring"
-  ]
+```js
+export const effectsList = {
+  ...
+  import: {
+    label: 'Imported',
+    effects: [
+      {name: 'your_effect_1.zip'},
+      {name: 'your_effect_2.zip'}
+    ]
+  }
+}
 ```
 
 You can obtain more effects on the [Demo Face Filters](https://docs.banuba.com/face-ar-sdk-v1/overview/demo_face_filters) page.

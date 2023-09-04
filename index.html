@@ -1,251 +1,91 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Banuba SDK Web AR demo</title>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Banuba SDK Web AR demo</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<body>
 
-<body class="ui container">
-    <header>
-      <h2>Select an effect:</h2>
-      <label class="ui sub header">
-        FPS lock
-        <select class="ui dropdown">
-          <option value="30" selected>30</option>
-          <option value="60">60</option>
-          <option value="-1">🔥 Unlocked 🔥</option>
-        </select>
-      </label>
-      <button class="ui button" id="reset">Reset</button>
-      <div id="effects"></div>
-    </header>
+<main>
+    <div class="start-screen">
+        <div class="start-screen__spinner ">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <div class="start-screen__inner hidden">
+            <div class="start-screen__title">Please define a source:</div>
+            <div class="start-screen__webcam">
+                <input type="radio" name="source" id="webcam" value="webcam">
+                <label for="webcam">Use WebCam</label>
+            </div>
+            <div class="start-screen__photo">
+                <input type="file" id="image" accept="image/*">
+                <label for="image">Upload a Photo</label>
+            </div>
+            <div class="start-screen__image"></div>
+        </div>
+    </div>
 
-    <main>
-      <span id="rec" hidden>
-        <i class="circle icon"></i>
-        REC
-      </span>
-      <span id="fps">
-        Webcam FPS: <span id="cam"></span>
-        </br>
-        Processing FPS: <span id="processing"></span>
-        </br>
+    <div class="hand-gestures-tip hidden">
+        <div class="hand-gestures-tip__inner">
+            <div class="hand-gestures-tip__title">Tip</div>
+            <div class="hand-gestures-tip__subtitle">Supported gestures:</div>
+            <div class="hand-gestures-tip__content">
+                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Like.svg" alt="Like"/><label>"Like"</label></div>
+                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Ok.svg" alt="Ok"/><label>"Ok"</label></div>
+                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Rock.svg" alt="Rock"/><label>"Rock"</label></div>
+                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Victory.svg" alt="Victory"/> <label>"Victory"</label></div>
+                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Palm.svg" alt="Palm"/><label>"Palm"</label></div>
+            </div>
+        </div>
+        <button class="hand-gestures-tip__button">Close</button>
+    </div>
+    <div class="hand-gestures hidden"></div>
+    <div class="heart-rate hidden"></div>
+    <div class="test-ruler hidden"></div>
+    <div id="screenshot-popup" class="popup hidden"><span class="popup__bold">Screenshot is ready</span> Check the <span id="screenshot-link"></span></div>
+    <div id="rec-popup" class="popup hidden"><span class="popup__bold">Video is ready</span> Check the <span id="rec-link"></span></div>
+    <div class="overlay"></div>
+    <div id="webar"></div>
+    <div id="fps">
+        Webcam FPS: <span id="cam"></span><br>
+        Processing FPS: <span id="processing"></span><br>
         Render FPS: <span id="render"></span>
-      </span>
-      <div id="webar"></div>
-      <div id="source">
-        <button class="ui button" id="source-webcam">Webcam</button>
-        <span>or</span>
-        <label class="ui button">
-          <input type="file" id="source-image" accept="image/*">Upload a photo</button>
-        </label>
-      </div>
-      <button class="ui icon button" id="sound">
-        <i class="volume icon"></i>
-      </button>
-      <output></output>
-    </main>
+    </div>
+    <input type="image" id="reset-button" src="assets/icons/controls/icon-reset.svg" alt="reset button" disabled/>
 
-    <footer>
-      <button class="ui right labeled icon button" id="screenshot">
-        <i class="file image icon"></i>
-        Screenshot
-      </button>
-
-      <div class="ui buttons">
-        <button class="ui right labeled icon button" data-content="Start video recording" id="start">
-          <i class="play icon"></i>
-          Video recording
-        </button>
-        <button class="ui icon button" data-content="Pause video recording" id="pause">
-          <i class="pause icon"></i>
-        </button>
-        <button class="ui icon button" data-content="Resume video recording" id="resume">
-          <i class="step forward icon"></i>
-        </button>
-        <button class="ui icon button" data-content="Stop video recording" id="stop">
-          <i class="stop icon"></i>
-        </button>
-      </div>
-    </footer>
-
-    <script src="BanubaClientToken.js"></script>
-    <script type="module">
-      import { Effect, Webcam, Image, Player, Module, VideoRecorder, ImageCapture, Dom } from "https://cdn.jsdelivr.net/npm/@banuba/webar/dist/BanubaSDK.browser.esm.min.js"
-
-      const effects = [
-        "Ruler",
-        "BackgroundPicture",
-        "Hipster",
-        "Rorschach",
-        "DebugFRX",
-        "ActionunitsRabbit",
-        "Glasses",
-        "Lips",
-        "MonsterFlowery",
-        "Retrowave",
-        "Ring",
-        "TrollGrandma",
-        "Hair",
-      ]
-
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-      /** @see https://docs.banuba.com/face-ar-sdk-v1/web/web_known_issues#effect-animations-are-delayed-on-safari for details */
-      if (isSafari) navigator.serviceWorker.register("./range-requests.sw.js")
-
-      ;(async () => {
-        let lock = $("select")[0].value
-        let source
-
-        const [player, modules] = await Promise.all([
-          Player.create({
-            clientToken: window.BANUBA_CLIENT_TOKEN,
-            proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
-          }),
-          // Find more about available modules:
-          // https://docs.banuba.com/face-ar-sdk-v1/generated/typedoc/classes/Module.html
-          Module.preload(["face_tracker", "background", "hair", "hands", "lips"].map(m => `https://cdn.jsdelivr.net/npm/@banuba/webar/dist/modules/${m}.zip`)),
-        ])
-
-        await player.addModule(...modules)
-
-        //#region fps lock
-        $("select").dropdown({
-          onChange: (fps) => {
-            lock = fps
-            if (source) player.use(source, { fps: lock })
-          }
-        })
-        //#endregion
-        
-        //#region source
-        $("#source-image").on("change", e => {
-          source?.stop?.()
-          source = new Image(e.target.files[0])
-          player.use(source, { fps: lock })
-          Dom.render(player, "#webar")
-        })
-        $("#source-webcam").on("click", e => {
-          source?.stop?.()
-          source = new Webcam()
-          player.use(source, { fps: lock })
-          Dom.render(player, "#webar")
-        })
-        //#endregion
-
-        //#region fps count
-        const fps = {
-          cam: 0,
-          processing: 0,
-          render: 0,
-        }
-        player.addEventListener("framereceived", () => fps.cam++)
-        player.addEventListener("frameprocessed", ({ detail }) => fps.processing = 1. / detail.averagedDuration)
-        player.addEventListener("framerendered", () => fps.render++)
-
-        setInterval(() => {
-          Object
-                  .entries(fps)
-                  .forEach(([name, value]) => {
-                    fps[name] = 0
-                    $(`#${name}`).text(value.toFixed(1))
-                  })
-        }, 1000)
-        //#endregion
-
-        //#region effects
-        $.each(effects, async (idx, effectName) => {
-          const btn = $(
-            `<button class="ui primary button elastic loading">
-              ${effectName}
-            </button>`
-          )
-          .prependTo("#effects")
-
-          const effect = await Effect.preload(`effects/${effectName}.zip`)
-
-          btn.on("click", () => player.applyEffect(effect))
-          btn.removeClass("loading")
-        })
-        $("#reset").on("click", () => player.clearEffect())
-        //#endregion
-
-
-        //#region ruler
-        player.addEventListener("effectactivated", ({ detail: effect }) => {
-          const isRuler = effect.scene().getName() === "ruler"
-
-          player.removeEventListener("framedata", onFrameData)
-          
-          if (isRuler) player.addEventListener("framedata", onFrameData)
-
-          $("output").text("")
-        })
-
-        function onFrameData({ detail: frameData }) {
-          const hasFace = frameData.get("frxRecognitionResult.faces.0.hasFace")
-          if (!hasFace) return
-
-          const distance = frameData.get("Ruler")
-
-          $("output").text(`Distance: ${distance.toFixed(2)}`)
-        }
-        //#endreegion
-
-        //#region volume
-        let volume = 0 // initial volume state (muted by default)
-
-        $("#sound > i").toggleClass(volume ? "up" : "mute")
-        $("#sound").on("click", () => player.setVolume(volume = +!volume)) // toggle 0 - 1
-
-        player.addEventListener("volumechange", () => $("#sound > i").toggleClass("up mute"))
-        //#endregion
-
-        //#region image capture
-        const capture = new ImageCapture(player)
-
-        $("#screenshot").on("click", async () => $("body").toast({
-          title: "Screenshot is ready",
-          message: `Check the <a href="${URL.createObjectURL(await capture.takePhoto())}" target="_blank">link</a>`,
-          class: { toast: "ui info message" },
-        }))
-        //#endregion
-
-        //#region video recording
-        let recorder
-
-        // lazy recorder initialization cuz it eats fps :(
-        const getRecorder = () => {
-          if (recorder) return recorder
-
-          recorder = new VideoRecorder(player)
-
-          recorder.addEventListener("start", () => $("#rec").show())
-          recorder.addEventListener("pause", () => $("#rec").hide())
-          recorder.addEventListener("resume", () => $("#rec").show())
-          recorder.addEventListener("stop", () => $("#rec").hide())
-
-          return recorder
-        }
-
-        $("#start").on("click", () => getRecorder().start())
-        $("#pause").on("click", () => getRecorder().pause())
-        $("#resume").on("click", () => getRecorder().resume())
-        $("#stop").on("click", async () => $("body").toast({
-          title: "Video record is ready",
-          message: `Check the <a href="${URL.createObjectURL(await getRecorder().stop())}" target="_blank">link</a>`,
-          class: { toast: "ui info message" },
-        }))
-
-        //#endregion
-      })()
-    </script>
+    <div class="controls">
+        <div id="rec-duration" class="hidden"></div>
+        <input type="image" id="rec-button" src="assets/icons/controls/icon-record.svg" alt="rec-button">
+        <input type="image" id="screenshot-button" src="assets/icons/controls/icon-screenshot.svg" alt="screenshot-button">
+        <input type="image" id="mute-button" src="assets/icons/controls/icon-sound.svg" alt="mute-button">
+    </div>
+    <div class="import-message hidden">
+        <div class="import-message__inner">
+            To import additional filters, move the *.zip file into the <span>import</span> folder and add files names to "import" block in effectsConfig.js file
+        </div>
+    </div>
+    <div class="footer">
+        <div class="effects">
+            <div class="effect-control"></div>
+            <div class="effects-list"></div>
+        </div>
+        <div class="categories-button__left hidden">
+            <div class="categories-button__left-icon">
+                <img src="assets/icons/controls/icon-arrow.svg" alt="left">
+            </div>
+        </div>
+        <div class="categories-button__right hidden">
+            <div class="categories-button__right-icon">
+                <img src="assets/icons/controls/icon-arrow.svg" alt="right">
+            </div>
+        </div>
+        <div class="categories"></div>
+        <div class="technologies"></div>
+    </div>
+</main>
 </body>
-
+<script src="BanubaClientToken.js"></script>
+<script type="module" src="main.js"></script>
 </html>
