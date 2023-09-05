@@ -7,11 +7,11 @@ import {
   getScreenshot,
   getSource,
   muteToggle,
-  startAnalise,
+  startAnalysis,
   startGame,
   startPlayer,
   startRecord,
-  stopAnalise,
+  stopAnalysis,
   stopRecord
 } from "./BanubaPlayer.js"
 
@@ -68,7 +68,7 @@ const removeEffectControlHandler = () => {
   effectControlBlock.innerHTML = ''
 
   if (curEventType === 'analise') {
-    stopAnalise()
+    stopAnalysis()
     handGesturesBlock.classList.add('hidden')
     handGesturesTipBlock.classList.add('hidden')
     heartRateBlock.classList.add('hidden')
@@ -122,7 +122,7 @@ const addEffectControlHandler = (control) => {
         testRulerBlock.classList.remove('hidden')
         controlBlock = testRulerBlock
       }
-      controlFunc = startAnalise(selectedEffect.name, selectedEffect.params[0], controlBlock)
+      controlFunc = startAnalysis(selectedEffect.name, selectedEffect.params[0], controlBlock)
       break
 
     case 'game':
@@ -283,7 +283,7 @@ const createTechBlock = () => {
 
 
 const onResetButtonClick = async () => {
-  stopAnalise()
+  stopAnalysis()
   await clearEffect()
   selectedCategoryInput = null
   selectedTechnology = null

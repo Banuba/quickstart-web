@@ -73,8 +73,8 @@ const startFpsTracking = () => {
 
 
 let curResult
-let analiseFunc
-const renderAnaliseResultFuncs = {
+let analyseFunc
+const renderAnalysisResultFuncs = {
 
   'Detection_gestures': async (paramString, resultBlock) => {
     let res = await currentEffect.evalJs(paramString)
@@ -108,13 +108,13 @@ const renderAnaliseResultFuncs = {
   },
 }
 
-export const startAnalise = async (effectName, paramString, resultBlock) => {
-  analiseFunc = () => renderAnaliseResultFuncs[effectName.split('.')[0]](paramString, resultBlock)
-  player.addEventListener('framedata', analiseFunc)
+export const startAnalysis = async (effectName, paramString, resultBlock) => {
+  analyseFunc = () => renderAnalysisResultFuncs[effectName.split('.')[0]](paramString, resultBlock)
+  player.addEventListener('framedata', analyseFunc)
 }
 
-export const stopAnalise = () => {
-  player.removeEventListener('framedata', analiseFunc)
+export const stopAnalysis = () => {
+  player.removeEventListener('framedata', analyseFunc)
 }
 
 export const clearEffect = async () => {
