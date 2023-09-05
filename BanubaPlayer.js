@@ -117,8 +117,8 @@ export const stopAnalise = () => {
   player.removeEventListener('framedata', analiseFunc)
 }
 
-export const clearEffect = () => {
-  player.clearEffect()
+export const clearEffect = async () => {
+  await player.clearEffect()
 }
 
 export const muteToggle = (value) => {
@@ -136,11 +136,11 @@ export const startPlayer = (source) => {
 
 export const applyEffect = async (effectName) => {
   currentEffect = new Effect(effectName)
-  player.applyEffect(currentEffect)
+  await player.applyEffect(currentEffect)
 }
 
-export const applyEffectParam = (paramString) => {
-  currentEffect.evalJs(paramString)
+export const applyEffectParam = async (paramString) => {
+  await currentEffect.evalJs(paramString)
 }
 
 export const startGame = () => {

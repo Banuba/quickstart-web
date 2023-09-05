@@ -56,11 +56,11 @@ let controlFunc
 let curEventType
 
 
-const setEffectParam = (params, value, arg) => {
-  params.forEach(param => {
+const setEffectParam = async (params, value, arg) => {
+  for (const param of params) {
     const s = arg ? `${param}({${arg}:${value}})` : `${param}(${value})`
-    applyEffectParam(s)
-  })
+    await applyEffectParam(s)
+  }
 }
 
 
@@ -94,10 +94,10 @@ const addEffectControlHandler = (control) => {
       controlBlock = document.querySelector('.effect-control__slider')
       const value = (0 - min) / (10 - min) * 100
       controlBlock.style.background = 'linear-gradient(to right, #4794FE 0%, #4794FE ' + value + '%, #EEF2F7 ' + value + '%, #EEF2F7 100%)'
-      controlFunc = (e) => {
+      controlFunc = async (e) => {
         const value = (e.target.value - e.target.min) / (e.target.max - e.target.min) * 100
         document.querySelector('.effect-control__slider').style.background = 'linear-gradient(to right, #4794FE 0%, #4794FE ' + value + '%, #EEF2F7 ' + value + '%, #EEF2F7 100%)'
-        setEffectParam(selectedEffect.params, e.target.value * selectedEffect.direction / 10, selectedEffect?.arg)
+        await setEffectParam(selectedEffect.params, e.target.value * selectedEffect.direction / 10, selectedEffect?.arg)
       }
       controlBlock.addEventListener('input', controlFunc)
       break
@@ -105,8 +105,8 @@ const addEffectControlHandler = (control) => {
     case 'toggle':
       effectControlBlock.innerHTML = '<input type="checkbox" name="toggle" class="effect-control__toggle" checked>'
       controlBlock = document.querySelector('.effect-control__toggle')
-      controlFunc = (e) => {
-        setEffectParam(selectedEffect.params, e.target.checked ? 1 : 0)
+      controlFunc = async (e) => {
+        await setEffectParam(selectedEffect.params, e.target.checked ? 1 : 0)
       }
       controlBlock.addEventListener('change', controlFunc)
       break
@@ -149,11 +149,11 @@ const startEffect = (effectIndex) => {
 }
 
 
-const createEffectBlock = (effects) => {
+const createEffectBlock = async (effects) => {
   let htmlBlock = ''
-  const onEffectSelect = (e) => {
+  const onEffectSelect = async (e) => {
     removeEffectControlHandler()
-    clearEffect()
+    await clearEffect()
     startEffect(e?.target.value ?? 0)
   }
 
@@ -180,7 +180,7 @@ const createEffectBlock = (effects) => {
     })
   } else {
     effectsBlock.innerHTML = htmlBlock
-    onEffectSelect()
+    await onEffectSelect()
   }
 }
 
@@ -216,13 +216,13 @@ const createCategoryBlock = (categories) => {
   }
 
 
-  const onCategorySelect = (e) => {
+  const onCategorySelect = async (e) => {
     if (e.target === selectedCategoryInput) {
       return
     }
     selectedCategoryInput = e.target
     selectedCategory = selectedTechnology.categories[selectedCategoryInput.value]
-    createEffectBlock(selectedCategory.effects)
+    await createEffectBlock(selectedCategory.effects)
   }
 
   document.querySelectorAll('input[name="category"]').forEach((el, i) => {
@@ -242,7 +242,7 @@ const createTechBlock = () => {
       </div>`
   }
 
-  const onTechSelect = (e) => {
+  const onTechSelect = async (e) => {
 
     if (e.target === selectedTechInput) {
       return
@@ -261,7 +261,7 @@ const createTechBlock = () => {
       if (!effectsList[selectedTechInput.value].effects.length) {
         importMessageBlock.classList.remove('hidden')
         removeEffectControlHandler()
-        clearEffect()
+        await clearEffect()
         effectsBlock.innerHTML = ''
       }
     } else {
@@ -282,9 +282,9 @@ const createTechBlock = () => {
 }
 
 
-const onResetButtonClick = () => {
+const onResetButtonClick = async () => {
   stopAnalise()
-  clearEffect()
+  await clearEffect()
   selectedCategoryInput = null
   selectedTechnology = null
   selectedTechInput.checked = false
