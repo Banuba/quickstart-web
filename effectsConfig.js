@@ -503,10 +503,6 @@ export const effectsList = {
 
   import: {
     label: 'Imported',
-    effects: [
-      // Place your effect zip-file to import folder and add here zip-file name. Example:
-      // {name: 'your_effect_1.zip'},
-      // {name: 'your_effect_2.zip'}
-    ]
+    effects: []
   }
 }

@@ -41,20 +41,14 @@ Open [localhost:8080](http://localhost:8080)
 
 ## Adding a new effect
 
-Put effect zip file to `import/` folder and add zip file name to block `import` in `EffectsConfig.js` file.
+Put effect zip file to `import/` folder and add zip file name to `./import/effectsList.js` file.
 Example:
 
 ```js
-export const effectsList = {
-  ...
-  import: {
-    label: 'Imported',
-    effects: [
-      {name: 'your_effect_1.zip'},
-      {name: 'your_effect_2.zip'}
-    ]
-  }
-}
+export const importedEffectsList = [
+  'your_effect_1.zip',
+  'your_effect_2.zip'
+]
 ```
 
 You can obtain more effects on the [Demo Face Filters](https://docs.banuba.com/face-ar-sdk-v1/overview/demo_face_filters) page.

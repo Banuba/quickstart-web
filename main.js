@@ -1,4 +1,5 @@
 import {effectsList} from "./effectsConfig.js";
+import {importedEffectsList} from "./import/effectsList.js";
 import {
   applyEffect,
   applyEffectParam,
@@ -281,6 +282,10 @@ const createTechBlock = () => {
   })
 }
 
+const getImportedEffects = () => {
+  importedEffectsList.forEach(effect => effectsList.import.effects.push({name: effect}))
+}
+
 
 const onResetButtonClick = async () => {
   stopAnalysis()
@@ -417,4 +422,5 @@ document.querySelector('.hand-gestures-tip__button').addEventListener('click', (
   handGesturesBlock.classList.remove('hidden')
   handGesturesBlock.classList.remove('hidden')
 })
+getImportedEffects()
 createTechBlock()
