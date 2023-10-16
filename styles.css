@@ -18,7 +18,7 @@ main {
     font-size: 10px;
     font-weight: 700;
     line-height: 16px;
-    letter-spacing: 0em;
+    letter-spacing: 0;
     text-align: left;
     color: #FFFFFF;
     position: absolute;
@@ -401,7 +401,6 @@ input[name="effect"]:checked + .effect-icon__border {
 }
 
 .hand-gestures-tip {
-    background: #fff;
     top: 54px;
     left: 390px;
     padding: 40px 60px;
@@ -409,7 +408,7 @@ input[name="effect"]:checked + .effect-icon__border {
     text-align: center;
     border-radius: 20px;
     background: #FFF;
-    box-shadow: 0px 12px 32px 0px rgba(51, 61, 83, 0.10);
+    box-shadow: 0 12px 32px 0 rgba(51, 61, 83, 0.10);
 }
 
 .hand-gestures-tip__title {
