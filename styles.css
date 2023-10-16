@@ -450,6 +450,7 @@ input[name="effect"]:checked + .effect-icon__border {
 .hand-gestures-tip__button {
     background: #000;
     border-radius: 24px;
+    border-width: 0;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
