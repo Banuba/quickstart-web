@@ -516,10 +516,18 @@ input[name="effect"]:checked + .effect-icon__border {
     color: #FFFFFF;
 }
 
-.popup {
+.popups {
     position: absolute;
     left: 425px;
-    bottom: 142px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.popup {
+    opacity: 1;
     color: #191428;
     font-size: 13px;
     font-style: normal;
@@ -528,9 +536,13 @@ input[name="effect"]:checked + .effect-icon__border {
     padding: 12px 24px;
     border-radius: 12px;
     background: #FFF;
-    box-shadow: 0px 12px 32px 0px rgba(51, 61, 83, 0.10);
+    box-shadow: 0 12px 32px 0 rgba(51, 61, 83, 0.10);
+    transition: all ease-in-out 0.5s;
 }
 
+.popup__hidden {
+    opacity: 0;
+}
 .popup__bold {
     margin-right: 8px;
     font-weight: 700;
