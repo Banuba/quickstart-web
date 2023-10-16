@@ -49,7 +49,7 @@ export const effectsList = {
     label: 'Avatar',
     categories: {
       hades: {
-        label: '',
+        label: 'Hades',
         effects: [
           {name: 'Hades.zip'}
         ]
