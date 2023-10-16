@@ -163,7 +163,7 @@ main {
 }
 
 .footer {
-    overflow: auto;
+    overflow: hidden;
 }
 
 .technologies {
