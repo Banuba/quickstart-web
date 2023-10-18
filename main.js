@@ -34,8 +34,7 @@ const testRulerBlock = document.querySelector('.test-ruler')
 const fpsBlock = document.querySelector('#fps')
 const recDurationBlock = document.querySelector('#rec-duration')
 const importMessageBlock = document.querySelector('.import-message')
-const screenshotPopup = document.querySelector('#screenshot-popup')
-const recPopup = document.querySelector('#rec-popup')
+const popups = document.querySelector('#popups')
 const resetButton = document.querySelector('#reset-button')
 const muteButton = document.querySelector('#mute-button')
 const screenshotButton = document.querySelector('#screenshot-button')
@@ -319,12 +318,19 @@ const onScreenshotButtonClick = async (e) => {
     screenshotButton.src = 'assets/icons/controls/icon-screenshot-active.svg'
   } else {
     screenshotButton.src = 'assets/icons/controls/icon-screenshot.svg'
-    screenshotPopup.classList.remove('hidden')
     const url = URL.createObjectURL(await getScreenshot())
-    screenshotPopup.querySelector('#screenshot-link').innerHTML = `<a href="${url}" target="_blank">link</a>`
+    const popup = document.createElement('div')
+    popup.classList.add('popup', 'popup__hidden')
+    popup.innerHTML = `<span class="popup__bold">Screenshot is ready</span> Check the <span id="screenshot-link"><a href="${url}" target="_blank">link</a></span>`
+    popups.prepend(popup)
     setTimeout(() => {
-      screenshotPopup.classList.add('hidden')
-      // URL.revokeObjectURL(url)
+      popup.classList.remove('popup__hidden')
+    }, 20)
+    setTimeout(() => {
+      popup.classList.add('popup__hidden')
+      setTimeout(() => {
+        popup.remove()
+      }, 5500)
     }, 5000)
   }
 };
@@ -350,14 +356,21 @@ const renderRecDuration = () => {
 const onRecButtonClick = async () => {
   if (!!isRecording) {
     recButton.src = 'assets/icons/controls/icon-record.svg'
-    recPopup.classList.remove('hidden')
     recDurationBlock.classList.add('hidden')
     clearInterval(recDurationInterval)
     const url = URL.createObjectURL(await stopRecord())
-    recPopup.querySelector('#rec-link').innerHTML = `<a href="${url}" target="_blank">link</a>`
+    const popup = document.createElement('div')
+    popup.classList.add('popup', 'popup__hidden')
+    popup.innerHTML = `<span class="popup__bold">Video is ready</span> Check the <span id="rec-link"><a href="${url}" target="_blank">link</a</span>`
+    popups.prepend(popup)
     setTimeout(() => {
-      recPopup.classList.add('hidden')
-      URL.revokeObjectURL(url)
+      popup.classList.remove('popup__hidden')
+    }, 20)
+    setTimeout(() => {
+      popup.classList.add('popup__hidden')
+      setTimeout(() => {
+        popup.remove()
+      }, 5500)
     }, 5000)
   } else {
     recButton.src = 'assets/icons/controls/icon-record-active.svg'

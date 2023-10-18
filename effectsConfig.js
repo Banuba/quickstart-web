@@ -24,15 +24,15 @@ export const effectsList = {
       background_separation: {
         label: 'Background separation',
         effects: [
-          {name: 'Regular_blur.zip', icon: 'Regular_blur.svg'},
-          {name: 'video_BG_RainyCafe.zip', icon: 'video_BG_RainyCafe.svg'},
+          {name: 'Regular_blur.zip', icon: 'Regular_blur.png'},
+          {name: 'video_BG_RainyCafe.zip', icon: 'video_BG_RainyCafe.png'},
         ],
       },
       beauty_filter: {
         label: 'Beauty Filter',
         effects: [
-          {name: 'dialect.zip', icon: 'dialect.svg'},
-          {name: 'WhooshBeautyFemale.zip', icon: 'WhooshBeautyFemale.svg'},
+          {name: 'dialect.zip', icon: 'dialect.png'},
+          {name: 'WhooshBeautyFemale.zip', icon: 'WhooshBeautyFemale.png'},
         ]
       },
       lightning_color_correction: {
@@ -49,7 +49,7 @@ export const effectsList = {
     label: 'Avatar',
     categories: {
       hades: {
-        label: '',
+        label: 'Hades',
         effects: [
           {name: 'Hades.zip'}
         ]
@@ -345,8 +345,8 @@ export const effectsList = {
       background_foreground: {
         label: 'Background/Foreground',
         effects: [
-          {name: 'BG.zip', icon: 'BG.svg'},
-          {name: 'FG.zip', icon: 'FG.svg'},
+          {name: 'BG.zip', icon: 'BG.png'},
+          {name: 'FG.zip', icon: 'FG.png'},
         ]
       },
       body_segmentation: {
@@ -466,17 +466,17 @@ export const effectsList = {
       glasses_try_on: {
         label: 'Glasses Try On',
         effects: [
-          {name: 'Eye_lenses_Blue.zip', icon: 'Eye_lenses_Blue.svg'},
-          {name: 'Eye_lenses_Green.zip', icon: 'Eye_lenses_Green.svg'},
-          {name: 'glasses_RayBan4165_Dark.zip', icon: 'Glasses_Dark.svg'},
+          {name: 'Eye_lenses_Blue.zip', icon: 'Eye_lenses_Blue.png'},
+          {name: 'Eye_lenses_Green.zip', icon: 'Eye_lenses_Green.png'},
+          {name: 'glasses_RayBan4165_Dark.zip', icon: 'Glasses_Dark.png'},
         ]
       },
       hair: {
         label: 'Hair Coloring',
         effects: [
-          {name: 'VTO_Hair_blue.zip', icon: 'VTO_Hair_blue.svg'},
-          {name: 'VTO_Hair_green.zip', icon: 'VTO_Hair_green.svg'},
-          {name: 'VTO_Hair_strand.zip', icon: 'VTO_Hair_strand.svg'},
+          {name: 'VTO_Hair_blue.zip', icon: 'VTO_Hair_blue.png'},
+          {name: 'VTO_Hair_green.zip', icon: 'VTO_Hair_green.png'},
+          {name: 'VTO_Hair_strand.zip', icon: 'VTO_Hair_strand.png'},
         ]
       },
       head_wearings: {
@@ -488,8 +488,8 @@ export const effectsList = {
       jewelry: {
         label: 'Jewelry',
         effects: [
-          {name: 'earrings_01.zip', icon: 'earrings_01.svg'},
-          {name: 'necklace_01.zip', icon: 'necklace_01.svg'},
+          {name: 'earrings_01.zip', icon: 'earrings_01.png'},
+          {name: 'necklace_01.zip', icon: 'necklace_01.png'},
         ]
       },
       makeup: {

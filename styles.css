@@ -18,7 +18,7 @@ main {
     font-size: 10px;
     font-weight: 700;
     line-height: 16px;
-    letter-spacing: 0em;
+    letter-spacing: 0;
     text-align: left;
     color: #FFFFFF;
     position: absolute;
@@ -45,7 +45,7 @@ main {
 }
 
 #reset-button:disabled {
-    opacity: 0.1;
+    opacity: 0.5;
 }
 
 .import-message {
@@ -163,7 +163,7 @@ main {
 }
 
 .footer {
-    overflow: auto;
+    overflow: hidden;
 }
 
 .technologies {
@@ -401,7 +401,6 @@ input[name="effect"]:checked + .effect-icon__border {
 }
 
 .hand-gestures-tip {
-    background: #fff;
     top: 54px;
     left: 390px;
     padding: 40px 60px;
@@ -409,7 +408,7 @@ input[name="effect"]:checked + .effect-icon__border {
     text-align: center;
     border-radius: 20px;
     background: #FFF;
-    box-shadow: 0px 12px 32px 0px rgba(51, 61, 83, 0.10);
+    box-shadow: 0 12px 32px 0 rgba(51, 61, 83, 0.10);
 }
 
 .hand-gestures-tip__title {
@@ -450,6 +449,7 @@ input[name="effect"]:checked + .effect-icon__border {
 .hand-gestures-tip__button {
     background: #000;
     border-radius: 24px;
+    border-width: 0;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
@@ -515,10 +515,18 @@ input[name="effect"]:checked + .effect-icon__border {
     color: #FFFFFF;
 }
 
-.popup {
+.popups {
     position: absolute;
     left: 425px;
-    bottom: 142px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.popup {
+    opacity: 1;
     color: #191428;
     font-size: 13px;
     font-style: normal;
@@ -527,9 +535,13 @@ input[name="effect"]:checked + .effect-icon__border {
     padding: 12px 24px;
     border-radius: 12px;
     background: #FFF;
-    box-shadow: 0px 12px 32px 0px rgba(51, 61, 83, 0.10);
+    box-shadow: 0 12px 32px 0 rgba(51, 61, 83, 0.10);
+    transition: all ease-in-out 0.5s;
 }
 
+.popup__hidden {
+    opacity: 0;
+}
 .popup__bold {
     margin-right: 8px;
     font-weight: 700;
