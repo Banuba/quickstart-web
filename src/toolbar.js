@@ -25,7 +25,7 @@ import {
   techBlock,
   importMessageBlock,
   effectsBlock,
-} from "./ui.js";
+} from "./elements.js";
 
 let controlBlock;
 let controlFunc;

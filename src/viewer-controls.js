@@ -11,7 +11,7 @@ import {
   popups,
   recDurationBlock,
   recButton,
-} from "./ui.js";
+} from "./elements.js";
 
 let isSoundOn = 0;
 let recDurationInterval;

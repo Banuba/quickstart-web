@@ -6,7 +6,7 @@ import {
   startScreen,
   overlay,
   fpsBlock,
-} from "./ui.js";
+} from "./elements.js";
 
 const onSourceSelect = () => {
   startScreen.classList.add("hidden");

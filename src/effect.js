@@ -24,7 +24,7 @@ import {
   handGesturesTipBlock,
   effectControlBlock,
   handGesturesBlock,
-} from "./ui.js";
+} from "./elements.js";
 
 export const getImportedEffects = () => {
   importedEffectsList.forEach((effect) =>
