@@ -1,90 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Banuba SDK Web AR demo</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<main>
-    <div class="start-screen">
-        <div class="start-screen__spinner ">
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <div class="start-screen">
+        <div class="start-screen__spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
         <div class="start-screen__inner hidden">
-            <div class="start-screen__title">Please define a source:</div>
-            <div class="start-screen__webcam">
-                <input type="radio" name="source" id="webcam" value="webcam">
-                <label for="webcam">Use WebCam</label>
-            </div>
-            <div class="start-screen__photo">
-                <input type="file" id="image" accept="image/*">
-                <label for="image">Upload a Photo</label>
-            </div>
-            <div class="start-screen__image"></div>
+          <div class="start-screen__title">Please define a source:</div>
+          <div class="start-screen__webcam">
+            <input type="radio" name="source" id="webcam" value="webcam" />
+            <label for="webcam">Use WebCam</label>
+          </div>
+          <div class="start-screen__photo">
+            <input type="file" id="image" accept="image/*" />
+            <label for="image">Upload a Photo</label>
+          </div>
+          <div class="start-screen__image"></div>
         </div>
-    </div>
+      </div>
 
-    <div class="hand-gestures-tip hidden">
+      <div class="hand-gestures-tip hidden">
         <div class="hand-gestures-tip__inner">
-            <div class="hand-gestures-tip__title">Tip</div>
-            <div class="hand-gestures-tip__subtitle">Supported gestures:</div>
-            <div class="hand-gestures-tip__content">
-                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Like.svg" alt="Like"/><label>"Like"</label></div>
-                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Ok.svg" alt="Ok"/><label>"Ok"</label></div>
-                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Rock.svg" alt="Rock"/><label>"Rock"</label></div>
-                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Victory.svg" alt="Victory"/> <label>"Victory"</label></div>
-                <div class="hand-gestures-tip__content-item"><img src="assets/icons/hand_gestures/Palm.svg" alt="Palm"/><label>"Palm"</label></div>
+          <div class="hand-gestures-tip__title">Tip</div>
+          <div class="hand-gestures-tip__subtitle">Supported gestures:</div>
+          <div class="hand-gestures-tip__content">
+            <div class="hand-gestures-tip__content-item">
+              <img src="assets/icons/hand_gestures/Like.svg" alt="Like" /><label
+                >"Like"</label
+              >
             </div>
+            <div class="hand-gestures-tip__content-item">
+              <img src="assets/icons/hand_gestures/Ok.svg" alt="Ok" /><label
+                >"Ok"</label
+              >
+            </div>
+            <div class="hand-gestures-tip__content-item">
+              <img src="assets/icons/hand_gestures/Rock.svg" alt="Rock" /><label
+                >"Rock"</label
+              >
+            </div>
+            <div class="hand-gestures-tip__content-item">
+              <img src="assets/icons/hand_gestures/Victory.svg" alt="Victory" />
+              <label>"Victory"</label>
+            </div>
+            <div class="hand-gestures-tip__content-item">
+              <img src="assets/icons/hand_gestures/Palm.svg" alt="Palm" /><label
+                >"Palm"</label
+              >
+            </div>
+          </div>
         </div>
         <button class="hand-gestures-tip__button">Close</button>
-    </div>
-    <div class="hand-gestures hidden"></div>
-    <div class="heart-rate hidden"></div>
-    <div class="test-ruler hidden"></div>
-    <div id="popups" class="popups"></div>
-    <div class="overlay"></div>
-    <div id="webar"></div>
-    <div id="fps">
-        Webcam FPS: <span id="cam"></span><br>
-        Processing FPS: <span id="processing"></span><br>
+      </div>
+      <div class="hand-gestures hidden"></div>
+      <div class="heart-rate hidden"></div>
+      <div class="test-ruler hidden"></div>
+      <div id="popups" class="popups"></div>
+      <div class="overlay"></div>
+      <div id="webar"></div>
+      <div id="fps">
+        Webcam FPS: <span id="cam"></span><br />
+        Processing FPS: <span id="processing"></span><br />
         Render FPS: <span id="render"></span>
-    </div>
-    <input type="image" id="reset-button" src="assets/icons/controls/icon-reset.svg" alt="reset button" disabled/>
+      </div>
+      <input
+        type="image"
+        id="reset-button"
+        src="assets/icons/controls/icon-reset.svg"
+        alt="reset button"
+        disabled
+      />
 
-    <div class="controls">
+      <div class="controls">
         <div id="rec-duration" class="hidden"></div>
-        <input type="image" id="rec-button" src="assets/icons/controls/icon-record.svg" alt="rec-button">
-        <input type="image" id="screenshot-button" src="assets/icons/controls/icon-screenshot.svg" alt="screenshot-button">
-        <input type="image" id="mute-button" src="assets/icons/controls/icon-sound.svg" alt="mute-button">
-    </div>
-    <div class="import-message hidden">
+        <input
+          type="image"
+          id="rec-button"
+          src="assets/icons/controls/icon-record.svg"
+          alt="rec-button"
+        />
+        <input
+          type="image"
+          id="screenshot-button"
+          src="assets/icons/controls/icon-screenshot.svg"
+          alt="screenshot-button"
+        />
+        <input
+          type="image"
+          id="mute-button"
+          src="assets/icons/controls/icon-sound.svg"
+          alt="mute-button"
+        />
+      </div>
+      <div class="import-message hidden">
         <div class="import-message__inner">
-            To import additional filters, move the *.zip file into the <span>import</span> folder and add files names to ./import/effectsList.js file
+          To import additional filters, move the *.zip file into the
+          <span>import</span> folder and add files names to
+          ./import/effectsList.js file
         </div>
-    </div>
-    <div class="footer">
+      </div>
+      <div class="footer">
         <div class="effects">
-            <div class="effect-control"></div>
-            <div class="effects-list"></div>
+          <div class="effect-control"></div>
+          <div class="effects-list"></div>
         </div>
         <div class="categories-button__left hidden">
-            <div class="categories-button__left-icon">
-                <img src="assets/icons/controls/icon-arrow.svg" alt="left">
-            </div>
+          <div class="categories-button__left-icon">
+            <img src="assets/icons/controls/icon-arrow.svg" alt="left" />
+          </div>
         </div>
         <div class="categories-button__right hidden">
-            <div class="categories-button__right-icon">
-                <img src="assets/icons/controls/icon-arrow.svg" alt="right">
-            </div>
+          <div class="categories-button__right-icon">
+            <img src="assets/icons/controls/icon-arrow.svg" alt="right" />
+          </div>
         </div>
         <div class="categories"></div>
         <div class="technologies"></div>
-    </div>
-</main>
-</body>
-<script src="BanubaClientToken.js"></script>
-<script type="module" src="main.js"></script>
+      </div>
+    </main>
+  </body>
+  <script src="BanubaClientToken.js"></script>
+  <script type="module" src="main.js"></script>
 </html>
