@@ -1,5 +1,5 @@
-# Banuba SDK Web AR demo app  
-    
+# Banuba SDK Web AR demo app
+
 ## Requirements
 
 - Banuba [client token](#obtaining-banuba-client-token)
@@ -29,10 +29,11 @@ git clone git@github.com:Banuba/quickstart-web.git
 Insert Banuba [client token](#obtaining-banuba-client-token) into `BanubaClientToken.js`
 
 ```js
-window.BANUBA_CLIENT_TOKEN = "PUT YOUR CLIENT TOKEN HERE"
+window.BANUBA_CLIENT_TOKEN = "PUT YOUR CLIENT TOKEN HERE";
 ```
 
 Run the live server in the cloned folder
+
 ```sh
 npx live-server
 ```
@@ -45,14 +46,11 @@ Put effect zip file to `import/` folder and add zip file name to `./import/effec
 Example:
 
 ```js
-export const importedEffectsList = [
-  'your_effect_1.zip',
-  'your_effect_2.zip'
-]
+export const importedEffectsList = ["your_effect_1.zip", "your_effect_2.zip"];
 ```
 
 You can obtain more effects on the [Demo Face Filters](https://docs.banuba.com/face-ar-sdk-v1/overview/demo_face_filters) page.
 
 ---
-  
+
 Learn more about Banuba WebAR SDK on the [Web](https://docs.banuba.com/face-ar-sdk-v1/web/web_overview) section of [docs.banuba.com](https://docs.banuba.com).
