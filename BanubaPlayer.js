@@ -29,6 +29,12 @@ export const fps = {
   render: 0,
 };
 
+const fpsCounter = {
+  cam: 0,
+  processing: 0,
+  render: 0,
+}
+
 let currentEffect;
 
 const [player, modules] = await Promise.all([
@@ -66,12 +72,20 @@ const crop = (renderWidth, renderHeight) => {
 };
 
 const startFpsTracking = () => {
-  player.addEventListener("framereceived", () => fps.cam++);
+  player.addEventListener("framereceived", () => fpsCounter.cam++);
   player.addEventListener(
     "frameprocessed",
-    ({ detail }) => (fps.processing = 1 / detail.averagedDuration),
+    ({ detail }) => (fpsCounter.processing = 1 / detail.averagedDuration),
   );
-  player.addEventListener("framerendered", () => fps.render++);
+  player.addEventListener("framerendered", () => fpsCounter.render++);
+
+  setInterval(() => {
+    fps.cam = fpsCounter.cam
+    fps.render = fpsCounter.render
+    fps.processing = fpsCounter.processing
+    fpsCounter.cam = 0
+    fpsCounter.render = 0
+  }, 1000)
 };
 
 let curResult;
