@@ -340,16 +340,6 @@ export const effectsList = {
   face_tracking: {
     label: "Face Tracking",
     categories: {
-      analytics: {
-        label: "Analytics",
-        effects: [
-          {
-            name: "heart_rate.zip",
-            control: "analyze",
-            params: ["onDataUpdate()"],
-          },
-        ],
-      },
       background_foreground: {
         label: "Background/Foreground",
         effects: [
@@ -390,6 +380,16 @@ export const effectsList = {
       skin_segmentation: {
         label: "Skin Segmentation",
         effects: [{ name: "Skin.zip" }],
+      },
+      analytics: {
+        label: "Analytics",
+        effects: [
+          {
+            name: "heart_rate.zip",
+            control: "analyze",
+            params: ["onDataUpdate()"],
+          },
+        ],
       },
     },
   },

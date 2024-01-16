@@ -111,6 +111,13 @@ const renderAnalysisResultFuncs = {
   },
 };
 
+/**
+ * __analyticsState can be "enabled" or "disabled"
+ */
+const __analyticsActive = "active"
+const __analyticsInActive = "inactive" 
+let _analyticsState = __analyticsInActive
+
 export const startAnalysis = async (effectName, paramString, resultBlock) => {
   analyseFunc = () =>
     renderAnalysisResultFuncs[effectName.split(".")[0]](
@@ -118,10 +125,12 @@ export const startAnalysis = async (effectName, paramString, resultBlock) => {
       resultBlock,
     );
   player.addEventListener("framedata", analyseFunc);
+  _analyticsState = __analyticsActive
 };
 
 export const stopAnalysis = () => {
-  player.removeEventListener("framedata", analyseFunc);
+  if (_analyticsState === __analyticsActive) player.removeEventListener("framedata", analyseFunc);
+  _analyticsState = __analyticsInActive
 };
 
 export const clearEffect = async () => {
