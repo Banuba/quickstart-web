@@ -118,6 +118,8 @@ const createCategoryBlock = (categories) => {
       return;
     }
 
+    stopAnalysis();
+
     hidePopups();
 
     setSelectedCategoryInput(e.target);
