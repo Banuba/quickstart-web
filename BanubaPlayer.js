@@ -21,8 +21,10 @@ const modulesList = [
   "skin",
 ];
 
+// NOTE: desired width and height should be multiple of 4
 const desiredWidth = 1120;
-const desiredHeight = 522;
+const desiredHeight = 524;
+
 export const fps = {
   cam: 0,
   processing: 0,
@@ -53,17 +55,6 @@ const [player, modules] = await Promise.all([
 ]);
 await player.addModule(...modules);
 
-const resize = (frameWidth, frameHeight) => {
-  const wRatio = desiredWidth / frameWidth;
-  const hRatio = desiredHeight / frameHeight;
-  const ratio = Math.max(wRatio, hRatio);
-
-  const resizedWidth = ratio * frameWidth;
-  const resizedHeight = ratio * frameHeight;
-
-  return [resizedWidth, resizedHeight];
-};
-
 const crop = (renderWidth, renderHeight) => {
   const dx = (renderWidth - desiredWidth) / 2;
   const dy = (renderHeight - desiredHeight) / 2;
@@ -75,7 +66,7 @@ const startFpsTracking = () => {
   player.addEventListener("framereceived", () => fpsCounter.cam++);
   player.addEventListener(
     "frameprocessed",
-    ({ detail }) => (fpsCounter.processing = 1 / detail.averagedDuration),
+    ({ detail }) => (fpsCounter.processing = 1000 / detail.averagedDuration),
   );
   player.addEventListener("framerendered", () => fpsCounter.render++);
 
@@ -164,7 +155,7 @@ export const getPlayer = () => {
 };
 
 export const startPlayer = (source) => {
-  player.use(source, { resize, crop });
+  player.use(source, { crop });
   Dom.render(player, "#webar");
   startFpsTracking();
 };
