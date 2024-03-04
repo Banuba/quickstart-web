@@ -217,4 +217,4 @@ const onResetButtonClick = async () => {
 resetButton.addEventListener("click", onResetButtonClick);
 
 createTechBlock();
-getImportedEffects();
+getImportedEffects(effectsList);

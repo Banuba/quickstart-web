@@ -26,7 +26,7 @@ import {
   handGesturesBlock,
 } from "./elements.js";
 
-export const getImportedEffects = () => {
+export const getImportedEffects = (effectsList) => {
   importedEffectsList.forEach((effect) =>
     effectsList.import.effects.push({ name: effect }),
   );
