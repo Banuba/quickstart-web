@@ -59,20 +59,19 @@ const fpsCounter = {
 
 let currentEffect;
 
-const [player, modules] = await Promise.all([
-  Player.create({
-    clientToken: window.BANUBA_CLIENT_TOKEN,
-    proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
-    useFutureInterpolate: false,
-    locateFile: `${sdkUrl}@${SDK_VERSION}/dist`,
-  }),
-  Module.preload(
-    modulesList.map((m) => {
-      `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${m}.zip`;
-    })
-  ),
-]);
-await player.addModule(...modules);
+const player = await Player.create({
+  clientToken: window.BANUBA_CLIENT_TOKEN,
+  proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
+  useFutureInterpolate: false,
+  locateFile: `${sdkUrl}@${SDK_VERSION}/dist`,
+});
+
+for (const moduleId of modulesList) {
+  const module = await Module.preload(
+    `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${moduleId}.zip`
+  );
+  await player.addModule(module);
+}
 
 const crop = (renderWidth, renderHeight) => {
   const dx = (renderWidth - desiredWidth) / 2;
