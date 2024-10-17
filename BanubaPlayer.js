@@ -68,9 +68,7 @@ const [player, modules] = await Promise.all([
   }),
   Module.preload(
     modulesList.map((m) => {
-      return isSafari && m === "face_tracker"
-        ? `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${m}_lite.zip`
-        : `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${m}.zip`;
+      `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${m}.zip`;
     })
   ),
 ]);
