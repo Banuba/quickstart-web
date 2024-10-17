@@ -1,4 +1,6 @@
-import {
+let SDK_VERSION = "1.16.0";
+
+const {
   Dom,
   Effect,
   Image,
@@ -7,7 +9,25 @@ import {
   Player,
   VideoRecorder,
   Webcam,
-} from "https://cdn.jsdelivr.net/npm/@banuba/webar/dist/BanubaSDK.browser.esm.min.js";
+  VERSION,
+} = await import(
+  `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/BanubaSDK.browser.esm.min.js`
+);
+
+if (VERSION != SDK_VERSION) {
+  console.warn(
+    `Version dont match: requested ${SDK_VERSION} - received ${VERSION}`
+  );
+
+  SDK_VERSION = VERSION;
+
+  if (SDK_VERSION.includes("-")) {
+    console.warn("SDK version includes '-'. Removing it...");
+    SDK_VERSION = SDK_VERSION.slice(0, SDK_VERSION.indexOf("-"));
+  }
+}
+
+const sdkUrl = "https://cdn.jsdelivr.net/npm/@banuba/webar";
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const modulesList = [
@@ -35,7 +55,7 @@ const fpsCounter = {
   cam: 0,
   processing: 0,
   render: 0,
-}
+};
 
 let currentEffect;
 
@@ -44,13 +64,14 @@ const [player, modules] = await Promise.all([
     clientToken: window.BANUBA_CLIENT_TOKEN,
     proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
     useFutureInterpolate: false,
+    locateFile: `${sdkUrl}@${SDK_VERSION}/dist`,
   }),
   Module.preload(
     modulesList.map((m) => {
       return isSafari && m === "face_tracker"
-        ? `https://cdn.jsdelivr.net/npm/@banuba/webar/dist/modules/${m}_lite.zip`
-        : `https://cdn.jsdelivr.net/npm/@banuba/webar/dist/modules/${m}.zip`;
-    }),
+        ? `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${m}_lite.zip`
+        : `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${m}.zip`;
+    })
   ),
 ]);
 await player.addModule(...modules);
@@ -66,49 +87,60 @@ const startFpsTracking = () => {
   player.addEventListener("framereceived", () => fpsCounter.cam++);
   player.addEventListener(
     "frameprocessed",
-    ({ detail }) => (fpsCounter.processing = 1000 / detail.averagedDuration),
+    ({ detail }) => (fpsCounter.processing = 1000 / detail.averagedDuration)
   );
   player.addEventListener("framerendered", () => fpsCounter.render++);
 
   setInterval(() => {
-    fps.cam = fpsCounter.cam
-    fps.render = fpsCounter.render
-    fps.processing = fpsCounter.processing
-    fpsCounter.cam = 0
-    fpsCounter.render = 0
-  }, 1000)
+    fps.cam = fpsCounter.cam;
+    fps.render = fpsCounter.render;
+    fps.processing = fpsCounter.processing;
+    fpsCounter.cam = 0;
+    fpsCounter.render = 0;
+  }, 1000);
 };
 
 let curResult;
 let analyseFunc;
 const renderAnalysisResultFuncs = {
   Detection_gestures: async (paramString, resultBlock) => {
-    let res = await currentEffect.evalJs(paramString);
-    if (curResult !== res && res !== undefined) {
-      curResult = res;
-      const icon =
-        res !== "No Gesture"
-          ? `<img src="assets/icons/hand_gestures/${curResult}.svg" alt="${curResult}"/>`
-          : "";
-      resultBlock.innerHTML = icon + `<span>${curResult}</span>`;
+    const res = await currentEffect.evalJs(paramString);
+
+    if (!(curResult !== res && res !== undefined)) {
+      return false;
     }
+
+    curResult = res;
+
+    const icon =
+      res === "No Gesture"
+        ? ""
+        : `<img src="assets/icons/hand_gestures/${curResult}.svg" alt="${curResult}"/>`;
+
+    resultBlock.innerHTML = `${icon}<span>${curResult}</span>`;
   },
 
   heart_rate: async (paramString, resultBlock) => {
-    let res = await currentEffect.evalJs(paramString);
-    if (curResult !== res && res !== undefined) {
-      curResult = res;
-      if (curResult.includes("calculation")) {
-        resultBlock.classList.add("heart-rate__analyse");
-      } else {
-        resultBlock.classList.remove("heart-rate__analyse");
-      }
-      resultBlock.innerText = curResult;
+    const res = await currentEffect.evalJs(paramString);
+    if (!(curResult !== res && res !== undefined)) {
+      return false;
     }
+
+    curResult = res;
+
+    if (curResult.includes("calculation")) {
+      resultBlock.classList.add("heart-rate__analyse");
+    } else {
+      resultBlock.classList.remove("heart-rate__analyse");
+    }
+
+    resultBlock.innerText = curResult;
+
+    return true;
   },
 
   test_Ruler: async (paramString, resultBlock) => {
-    let res = await currentEffect.evalJs(paramString);
+    const res = await currentEffect.evalJs(paramString);
     if (curResult !== res && res !== undefined) {
       curResult = res;
       resultBlock.innerText = curResult;
@@ -119,23 +151,24 @@ const renderAnalysisResultFuncs = {
 /**
  * __analyticsState can be "enabled" or "disabled"
  */
-const __analyticsActive = "active"
-const __analyticsInActive = "inactive" 
-let _analyticsState = __analyticsInActive
+const __analyticsActive = "active";
+const __analyticsInActive = "inactive";
+let _analyticsState = __analyticsInActive;
 
 export const startAnalysis = async (effectName, paramString, resultBlock) => {
   analyseFunc = () =>
     renderAnalysisResultFuncs[effectName.split(".")[0]](
       paramString,
-      resultBlock,
+      resultBlock
     );
   player.addEventListener("framedata", analyseFunc);
-  _analyticsState = __analyticsActive
+  _analyticsState = __analyticsActive;
 };
 
 export const stopAnalysis = () => {
-  if (_analyticsState === __analyticsActive) player.removeEventListener("framedata", analyseFunc);
-  _analyticsState = __analyticsInActive
+  if (_analyticsState === __analyticsActive)
+    player.removeEventListener("framedata", analyseFunc);
+  _analyticsState = __analyticsInActive;
 };
 
 export const clearEffect = async () => {
