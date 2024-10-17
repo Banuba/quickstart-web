@@ -41,10 +41,6 @@ const modulesList = [
   "skin",
 ];
 
-// NOTE: desired width and height should be multiple of 4
-const desiredWidth = 1120;
-const desiredHeight = 524;
-
 export const fps = {
   cam: 0,
   processing: 0,
@@ -66,19 +62,55 @@ const player = await Player.create({
   locateFile: `${sdkUrl}@${SDK_VERSION}/dist`,
 });
 
-for (const moduleId of modulesList) {
-  const module = await Module.preload(
-    `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${moduleId}.zip`
-  );
-  await player.addModule(module);
-}
+await Promise.all(
+  modulesList.map((moduleId) => {
+    return new Promise(async (resolve) => {
+      try {
+        const module = await Module.preload(
+          `https://cdn.jsdelivr.net/npm/@banuba/webar@${SDK_VERSION}/dist/modules/${moduleId}.zip`
+        );
+        await player.addModule(module);
+      } catch (error) {
+        console.warn(`Load module ${moduleId} error: `, error);
+      }
 
-const crop = (renderWidth, renderHeight) => {
-  const dx = (renderWidth - desiredWidth) / 2;
-  const dy = (renderHeight - desiredHeight) / 2;
+      return resolve();
+    });
+  })
+);
+
+/**
+ * Get crop params for given render size and desired size
+ *
+ * @return  {Array}  Result params array
+ */
+function crop(
+  renderWidth,
+  renderHeight,
+  desiredWidth = 1120,
+  desiredHeight = 524
+) {
+  if (renderWidth <= desiredWidth) {
+    desiredWidth = renderWidth;
+  }
+
+  if (renderHeight <= desiredHeight) {
+    desiredHeight = renderHeight;
+  }
+
+  let dx = (renderWidth - desiredWidth) / 2;
+  let dy = (renderHeight - desiredHeight) / 2;
+
+  if (dx <= 0) {
+    dx = 0;
+  }
+
+  if (dy <= 0) {
+    dy = 0;
+  }
 
   return [dx, dy, desiredWidth, desiredHeight];
-};
+}
 
 const startFpsTracking = () => {
   player.addEventListener("framereceived", () => fpsCounter.cam++);
