@@ -1,5 +1,11 @@
 let SDK_VERSION = "1.16.0";
 
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.has("sdk")) {
+  SDK_VERSION = urlParams.get("sdk");
+}
+
 const {
   Dom,
   Effect,
@@ -55,6 +61,8 @@ const fpsCounter = {
 
 let currentEffect;
 
+console.log("Load player with SDK: ", SDK_VERSION);
+
 const player = await Player.create({
   clientToken: window.BANUBA_CLIENT_TOKEN,
   proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
@@ -78,39 +86,6 @@ await Promise.all(
     });
   })
 );
-
-/**
- * Get crop params for given render size and desired size
- *
- * @return  {Array}  Result params array
- */
-function crop(
-  renderWidth,
-  renderHeight,
-  desiredWidth = 1120,
-  desiredHeight = 524
-) {
-  if (renderWidth <= desiredWidth) {
-    desiredWidth = renderWidth;
-  }
-
-  if (renderHeight <= desiredHeight) {
-    desiredHeight = renderHeight;
-  }
-
-  let dx = (renderWidth - desiredWidth) / 2;
-  let dy = (renderHeight - desiredHeight) / 2;
-
-  if (dx <= 0) {
-    dx = 0;
-  }
-
-  if (dy <= 0) {
-    dy = 0;
-  }
-
-  return [dx, dy, desiredWidth, desiredHeight];
-}
 
 const startFpsTracking = () => {
   player.addEventListener("framereceived", () => fpsCounter.cam++);
@@ -217,7 +192,7 @@ export const getPlayer = () => {
 };
 
 export const startPlayer = (source) => {
-  player.use(source, { crop });
+  player.use(source);
   Dom.render(player, "#webar");
   startFpsTracking();
 };
