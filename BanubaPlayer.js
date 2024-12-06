@@ -63,6 +63,10 @@ let currentEffect;
 
 console.log("Load player with SDK: ", SDK_VERSION);
 
+// Fixes video range requests in Safari that cause AR effects animation delay
+// https://docs.banuba.com/far-sdk/tutorials/development/known_issues/web/#effect-animations-are-delayed-in-safari
+navigator.serviceWorker.register("./range-requests.sw.js")
+
 const player = await Player.create({
   clientToken: window.BANUBA_CLIENT_TOKEN,
   proxyVideoRequestsTo: isSafari ? "___range-requests___/" : null,
