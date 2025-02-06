@@ -10,7 +10,7 @@
 
 The example uses CDN version of the [@banuba/webar](https://www.npmjs.com/package/@banuba/webar) npm package for simplicity.
 Please use the npm package mentioned above for real world projects.
-Check out the [Integration tutorials](https://docs.banuba.com/face-ar-sdk-v1/web/web_tutorials_integrations) for more ways of consuming [@banuba/webar](https://www.npmjs.com/package/@banuba/webar) package.
+Check out the [Integration tutorials](https://docs.banuba.com/far-sdk/tutorials/development/basic_integration?platform=web) for more ways of consuming [@banuba/webar](https://www.npmjs.com/package/@banuba/webar) package.
 
 ### Obtaining Banuba Client token
 
@@ -49,8 +49,8 @@ Example:
 export const importedEffectsList = ["your_effect_1.zip", "your_effect_2.zip"];
 ```
 
-You can obtain more effects on the [Demo Face Filters](https://docs.banuba.com/face-ar-sdk-v1/overview/demo_face_filters) page.
+You can obtain more effects on the [Demo Face Filters](https://docs.banuba.com/far-sdk/tutorials/capabilities/demo_face_filters) page.
 
 ---
 
-Learn more about Banuba WebAR SDK on the [Web](https://docs.banuba.com/face-ar-sdk-v1/web/web_overview) section of [docs.banuba.com](https://docs.banuba.com).
+Learn more about Banuba WebAR SDK on the [Web](https://docs.banuba.com/far-sdk/tutorials/development/basic_integration?platform=web) section of [docs.banuba.com](https://docs.banuba.com).
