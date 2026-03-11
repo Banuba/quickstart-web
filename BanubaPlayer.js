@@ -1,4 +1,4 @@
-let SDK_VERSION = "1.17.0";
+let SDK_VERSION = "1.18.0";
 
 const urlParams = new URLSearchParams(window.location.search);
 
