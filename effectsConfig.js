@@ -468,7 +468,9 @@ export const effectsList = {
         effects: [
           { name: "VTO_Hair_blue.zip", icon: "VTO_Hair_blue.png" },
           { name: "VTO_Hair_green.zip", icon: "VTO_Hair_green.png" },
-          { name: "VTO_Hair_strand.zip", icon: "VTO_Hair_strand.png" },
+          
+          // Not a realtime:
+          //{ name: "VTO_Hair_strand.zip", icon: "VTO_Hair_strand.png" },
         ],
       },
       head_wearings: {
