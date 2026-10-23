@@ -1,0 +1,12 @@
+{
+    "camera": {},
+    "faces": [
+        {
+            "eyes": {
+                "eyes": "0.1 0.6 0.25 0.8"
+            }
+        }
+    ],
+    "scene": "EyeColorGreen (prefabs)",
+    "version": "2.0.0"
+}

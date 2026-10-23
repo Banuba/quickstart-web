@@ -44,6 +44,7 @@ const modulesList = [
   "hair",
   "hands",
   "lips",
+  "makeup",
   "skin",
 ];
 

@@ -1,0 +1,13 @@
+{
+    "camera": {},
+    "faces": [
+        {
+            "makeup_base": {
+                "smooth": "0 0",
+                "mode": "quality"
+            }
+        }
+    ],
+    "scene": "SkinSmoothing (prefabs)",
+    "version": "2.0.0"
+}
